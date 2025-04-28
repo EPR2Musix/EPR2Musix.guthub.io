@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPR2 Musix - Official Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            transition: filter 0.5s ease;
+        }
+        .background-layer.blurred {
+            filter: blur(6px);
+        }
+        .content {
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 1000px;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+        .content.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #fff;
+        }
+        th {
+            background-color: #1db954;
+        }
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .socials a {
+            font-size: 2em;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        .socials a:hover {
+            transform: scale(1.1);
+        }
+        .socials a.instagram { color: #e4405f; }
+        .socials a.youtube { color: #ff0000; }
+        .socials a.twitter { color: #1da1f2; }
+        .socials a.spotify { color: #1db954; }
+        #showMoreBtn {
+            margin-top: 20px;
+            background-color: #1db954;
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #showMoreBtn:hover {
+            background-color: #17a44b;
+            transform: scale(1.05);
+        }
+        .more-info {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .more-info.active {
+            pointer-events: auto;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            background: red;
+            z-index: 9998;
+            transform-origin: top left;
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        .overlay.expand {
+            width: 100%;
+            height: 100%;
+        }
+        .overlay.shrink {
+            width: 0;
+            height: 0;
+        }
+        .more-info-content {
+            opacity: 0;
+            transform: scale(0.7);
+            background: #111;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 100%;
+            color: white;
+            text-align: left;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            z-index: 10000;
+            transition: all 0.4s ease;
+        }
+        .more-info-content.show {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.3s;
+        }
+        .more-info-content.hide {
+            opacity: 0;
+            transform: scale(0.7);
+        }
+        .more-info-content h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+        .more-info-content p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .close-btn {
+            display: inline-block;
+            background-color: #e4405f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .close-btn:hover {
+            background-color: #d0304a;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.3em;
+            }
+            table, th, td {
+                font-size: 0.95em;
+            }
+            .more-info-content h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-layer" id="backgroundLayer"></div>
+    <div class="content" id="mainContent">
+        <h1>EPR2 Musix</h1>
+        <table>
+            <tr><th>Artist Name</th><td>EPR2 Musix</td></tr>
+            <tr><th>Real Name</th><td>Emman Elumir</td></tr>
+            <tr><th>Birth Date</th><td>April 2006</td></tr>
+            <tr><th>Age</th><td>Approximately 19 years old</td></tr>
+            <tr><th>Location</th><td>Philippines</td></tr>
+            <tr><th>Collaborations</th><td>Luice, EmzzBruhh, HIZURE, 5INE</td></tr>
+            <tr><th>Total Songs</th><td>10+</td></tr>
+            <tr><th>Platforms</th><td>Spotify, Amazon Music, YouTube</td></tr>
+            <tr><th>Gaming </th><td>Minecraft, Geometry Dash, And Other...</td></tr>
+            <tr><th>Record Label</th><td>Amuse.io</td></tr>
+        </table>
+        <button id="showMoreBtn">Learn More</button>
+        <div class="socials">
+            <a href="https://www.instagram.com/epr2_musix_official" class="instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCColc7JcKFrJBsIKz8XfNzA" class="youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://twitter.com/epr2musix" class="twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://open.spotify.com/artist/epr2musix" class="spotify" target="_blank"><i class="fab fa-spotify"></i></a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="more-info" id="moreInfoModal">
+        <div class="more-info-content" id="infoContent">
+            <h2>About EPR2 Musix</h2>
+            <p>EPR2 Musix, whose real name is Emman Elumir, born in April 2006, is an independent music artist from the Philippines. Known for his experimental and electronic sound, he has collaborated with artists such as Luice, EmzzBruhh, HIZURE, and 5INE. Active since 2021, his music is available on Spotify, Amazon Music, and YouTube. EPR2 Musix maintains a mysterious persona while continuing to build a loyal fanbase with each release.</p>
+            <button class="close-btn" id="closeBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const showMoreBtn = document.getElementById("showMoreBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const modal = document.getElementById("moreInfoModal");
+        const overlay = document.getElementById("overlay");
+        const infoContent = document.getElementById("infoContent");
+        const content = document.getElementById("mainContent");
+        const socials = document.querySelectorAll(".socials a");
+
+        showMoreBtn.addEventListener("click", () => {
+            content.classList.add("fade-out");
+            overlay.classList.add("expand");
+            setTimeout(() => {
+                modal.classList.add("active");
+                infoContent.classList.add("show");
+                socials.forEach((social, index) => {
+                    setTimeout(() => {
+                        social.classList.add("slide-up");
+                    }, index * 150);
+                });
+            }, 600);
+        });
+
+        closeBtn.addEventListener("click", () => {
+            socials.forEach((social, index) => {
+                setTimeout(() => {
+                    social.classList.remove("slide-up");
+                }, index * 150);
+            });
+            infoContent.classList.remove("show");
+            infoContent.classList.add("hide");
+            setTimeout(() => {
+                modal.classList.remove("active");
+                overlay.classList.remove("expand");
+                content.classList.remove("fade-out");
+                infoContent.classList.remove("hide");
+            }, 600);
+        });
+    </script>
+</body>
+</html>
